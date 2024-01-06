@@ -1,0 +1,22 @@
+# textdomain: jail
+
+Allows one to send/release prisoners=Позволяет заключать и освобождать игрока из тюрьмы 
+Sends a player to Jail=Отправить игрока в тюрьму
+Sends the player to prison for a limited time=
+Releases a player from Jail by ID=Освободить игрока из тюрьмы по ID
+You have been sent to jail=Вы помещены в тюрьму
+You have been return to jail=Вы возвращены в тюрьму
+You have been released from jail=Вы были освобождены из тюрьмы
+has been sent to jail by=был отправлен в тюрьму игроком
+has been return to jail by=был возвращен в тюрьму игроком
+has been released from jail by=был освобожден из тюрьмы игроком
+List of prisoners=Список заключенных
+Prisoners:=Заключенные:
+Invalid ID=Неверный ID
+Return a prisoner to jail=Возвратить заключенного в тюрьму
+The player is already in jail=Игрок уже в тюреме
+Total number of prisoners:=Общее число заключенных:
+Show border=Показать границу
+Border display=Отображение границы
+The border is hidden=Граница скрыта
+Escape attempt: =Попытка побега: 

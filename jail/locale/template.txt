@@ -1,0 +1,16 @@
+Allows one to send/release prisoners=
+Sends a player to Jail=Отправить игрока в тюрьму
+Sends the player to prison for a limited time=
+Releases a player from Jail by ID=
+You have been sent to jail=
+You have been return to jail=
+You have been released from jail=
+has been sent to jail by=
+has been return to jail by=
+has been released from jail by=
+List of prisoners=
+Prisoners:=
+Invalid ID=
+Return a prisoner to jail=
+The player is already in jail=
+Total number of prisoners:=
