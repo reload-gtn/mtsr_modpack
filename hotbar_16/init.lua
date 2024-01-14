@@ -3,30 +3,9 @@ minetest.register_privilege("builder", {
 	give_to_singleplayer = false
 })
 
-local VERSION = "0.1.5a"
 local MODES = {legacy = "legacy", world = "world", session = "session"} -- this redundancy simplifies later checks
 local DEFAULT = {mode = MODES.world, slots = {legacy = 16, world = 10, session = 12}}
 local MOD_STORAGE = {}
-if not core.get_mod_storage then
-  -- MT < 0.4.16
-  MOD_STORAGE.present = false
-  MOD_STORAGE.settings = false
-else
-  -- MT 0.4.16+
-  MOD_STORAGE.present = true
-  MOD_STORAGE.settings = core.get_mod_storage()
-end
-
-
-local stringified_table_keys = function(what, sep)
-  -- what: table
-  -- sep: keys separator (a string)
-  local rc = ""
-  for k, v in pairs(what) do
-    rc = rc .. k .. sep
-  end
-  return string.sub(rc, 1, -#sep - 1)
-end
 
 local new_masked_array = function(mask, max)
   local rc = {}
@@ -65,11 +44,6 @@ local get_mode = function(storage, key, default_value)
   end
   if wrong then
      core.settings:set(key, value)
-     core.log("error",
-              "[MOD] hotbar v" .. VERSION ..
-              " automatically changed and saved the mode. " ..
-              "The mode has now been set to " ..
-              string.upper(value) .. ".")
   end
   return value
 end
@@ -113,11 +87,6 @@ local get_and_set_initial_slots = function(storage, mode_value, key, default_val
 
   else
     current = default_value -- Unplanned case
-    core.log("error",
-             "[MOD] hotbar v" .. VERSION ..
-             ": the specified mode - " .. string.upper(mode_value) ..
-             " - is unmanaged and has been overridden and set to " ..
-             string.upper(default_value) .. ".")
   end
 
   return current
@@ -148,38 +117,8 @@ hb.image.bg.get = function(slots)
 end
 
 hb.slots.set = function(name, slots)
-  local mask = {err = "[%s] Wrong slots number specified: the %s accepted value is %i.",
-                set = "[%s] Hotbar slots number set to %i."}
-  local display_name = name
-  if minetest.is_singleplayer() then
-    display_name = '_'
-  end
-  
   slots = math.floor(slots) -- to avoid fractions
-  
   hb.adjust(name, slots, hb.image.selected, hb.image.bg.get)
-
-  if hb.mode.current == MODES.legacy then
-    core.settings:set(hb.slots.key, slots)
-  elseif hb.mode.current == MODES.world then
-    MOD_STORAGE.settings:set_string(hb.slots.key, core.serialize(slots))
-  elseif hb.mode.current == MODES.session then
-    if core.is_singleplayer() then
-      -- This is an ephemeral / transient storage that is to survive while in a map
-      -- and trying different hotbar modes.
-      -- As a commodity, singleplayer can override the default value to get it back
-      -- if he/she switched back from another mode during the same session.
-      -- This has not to happen on a server to avoid that other players
-      -- overrided it or that their default / current value might be overridden by
-      -- others.
-      DEFAULT.slots[hb.mode.current] = slots
-    end
-  else
-    return
-  end
-  if hb.mode.current ~= MODES.session then
-    hb.slots.current = slots
-  end
 end
 
 minetest.register_on_joinplayer(function(player)
