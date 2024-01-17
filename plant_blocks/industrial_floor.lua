@@ -266,3 +266,164 @@ minetest.register_craft({
 		{"plant_blocks:scissors", "plant_blocks:scissors"},
 	}
 })
+
+--plant_blocks:yellow_line_floor
+minetest.register_node("plant_blocks:yellow_line_floor", {
+    description = S("Industrial with yellow line floor"),
+    paramtype2 = "facedir",
+    --place_param2 = 0,
+    tiles = {
+    	"floor_up.png^[combine:32x32:0,0=yellow_line_up.png",
+    	"basic_materials_cement_block.png",
+    	"basic_materials_cement_block.png",
+    	"basic_materials_cement_block.png",
+    	"basic_materials_cement_block.png",
+    	"basic_materials_cement_block.png",
+   	},
+    is_ground_content = false,
+	groups = {cracky=3, stone=1},
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_craft({
+	output = 'plant_blocks:yellow_line_floor',
+	recipe = {
+		{'','dye:yellow', 'plant_blocks:ruler'},
+		{'plant_blocks:floor', 'plant_blocks:brush', ''},
+		{'', '', ''},
+	},
+	replacements = {
+		{"plant_blocks:brush", "plant_blocks:brush"},
+		{"plant_blocks:ruler", "plant_blocks:ruler"}
+	}
+})
+
+--plant_blocks:yellow_line_corner_floor
+minetest.register_node("plant_blocks:yellow_line_corner_floor", {
+    description = S("Industrial floor with yellow corner line"),
+    paramtype2 = "facedir",
+    --place_param2 = 0,
+    tiles = {
+    	"floor_up.png^yellow_line_corner_up.png",
+    	"basic_materials_cement_block.png",
+    	"basic_materials_cement_block.png",
+    	"basic_materials_cement_block.png",
+    	"basic_materials_cement_block.png",
+    	"basic_materials_cement_block.png",
+   	},
+    is_ground_content = false,
+	groups = {cracky=3, stone=1},
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_craft({
+	output = 'plant_blocks:yellow_line_corner_floor',
+	recipe = {
+		{'','dye:yellow', 'plant_blocks:ruler'},
+		{'plant_blocks:floor', 'plant_blocks:brush', 'plant_blocks:ruler'},
+		{'', '', ''},
+	},
+	replacements = {
+		{"plant_blocks:brush", "plant_blocks:brush"},
+		{"plant_blocks:ruler", "plant_blocks:ruler"},
+		{"plant_blocks:ruler", "plant_blocks:ruler"}
+	}
+})
+
+--plant_blocks:e07
+minetest.register_node("plant_blocks:e07", {
+	description = S("Direction to the emergency exit down right"),
+	inventory_image = "plant_blocks_e07.png",
+	tiles = {
+		"bg_green_sign.png",
+		"bg_green_sign.png",
+		"bg_green_sign.png",
+		"bg_green_sign.png",
+		"bg_green_sign.png",
+		"[combine:64x60:0,0=plant_blocks_e07.png"
+	},
+	drawtype = "nodebox",
+	--drawtype = "signlike",
+	--paramtype = "fencelike",
+	legacy_facedir_simple = false,
+	--paramtype2 = "4dir",
+	paramtype2 = "facedir",
+	--paramtype2 = "wallmounted",
+	--paramtype2 = "leveled",
+	--sunlight_propagates = true,
+	--walkable = true,
+	node_box = {
+		--type = "connected",
+		type = "fixed",
+		--type = "wallmounted",
+		fixed = {
+			{-0.5, -0, 0.46, 0.5, 0.5, 0.5},
+			--{-0.5, -0.3, -0.0625, 0.5, 0.3, 0}, --center
+		},
+		--wall_bottom = {{-0.0625, -0.5, 0, 0.0625, 0.3125, 0.125}},
+		--connect_bottom = {{-0.0625, -0.5, 0, 0.0625, 0.3125, 0.125},},
+	},
+	--[[selection_box = {
+		type = "connected",
+		connect_bottom = {{-0.0625, -0.5, 0, 0.0625, 0.3125, 0.125},},
+		fixed = {}
+	},]]
+	--connects_to = {"group:wood", "group:tree",'group:cracky'},
+	--selection_box = {type = "wallmounted"},
+	is_ground_content = false,
+	groups = {crumbly=3},
+	--connect_sides={'back'},
+	--on_rotate = false,
+	--on_place = minetest.rotate_node,
+})
+
+minetest.register_craft({
+	output = 'plant_blocks:e07',
+	recipe = {
+		{'dye:green','plant_blocks:ruler', ''},
+		{'default:sign_wall_wood', 'plant_blocks:brush', ''},
+		{'', '', ''},
+	},
+	replacements = {
+		{"plant_blocks:brush", "plant_blocks:brush"},
+		{"plant_blocks:ruler", "plant_blocks:ruler"},
+	}
+})
+
+--plant_blocks:e05
+minetest.register_node("plant_blocks:e05", {
+	description = S("Direction to the emergency exit to the right up"),
+	inventory_image = "plant_blocks_e05.png",
+	tiles = {
+		"bg_green_sign.png",
+		"bg_green_sign.png",
+		"bg_green_sign.png",
+		"bg_green_sign.png",
+		"bg_green_sign.png",
+		"[combine:64x60:0,0=plant_blocks_e05.png" --^[transform4
+	},
+	drawtype = "nodebox",
+	legacy_facedir_simple = false,
+	paramtype2 = "facedir",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.5, -0, 0.46, 0.5, 0.5, 0.5},
+		},
+	},
+	is_ground_content = false,
+	groups = {crumbly=3},
+})
+
+minetest.register_craft({
+	output = 'plant_blocks:e05',
+	recipe = {
+		{'dye:green','plant_blocks:ruler', 'plant_blocks:brush'},
+		{'default:sign_wall_wood', '', ''},
+		{'', '', ''},
+	},
+	replacements = {
+		{"plant_blocks:brush", "plant_blocks:brush"},
+		{"plant_blocks:ruler", "plant_blocks:ruler"},
+	}
+})
