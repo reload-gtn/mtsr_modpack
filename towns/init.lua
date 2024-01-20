@@ -1,7 +1,9 @@
 local S = minetest.get_translator("towns")
 
 local towns_list = {}
+-- static spawn position
 
+local central_spawn = { x = 206.7,y = 6,z = -84.2 }
 local city_pos = { x = -12003, y = 22, z = -7498 }
 table.insert(towns_list, S("The city built by the player H743")..S(" | command - ").."/city")
 
@@ -28,5 +30,19 @@ minetest.register_chatcommand("list_towns", {
 			minetest.chat_send_player(name, i .. " - " .. towns_list[i])
 		end
 		return true, S("Total number of towns:") .." ".. #towns_list
+	end
+})
+
+minetest.register_chatcommand("spawn", {
+	description = S("Go to central Spawn"),
+	privs = {home = true},
+	func = function(name)
+
+		local player = minetest.get_player_by_name(name)
+
+		if player~=nil then 
+			player:set_pos(central_spawn)
+			minetest.chat_send_player(name,minetest.colorize("cyan", S("Welcome to central Spawn!")))
+		end
 	end
 })
