@@ -142,7 +142,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 					interact = true,
 					home  = true,
 					spawn = true,
-					tp = true
+					tp = true,
+					shout = true
 				})
 				minetest.log("action", "Granted " ..name.. " interact.")
 			else
