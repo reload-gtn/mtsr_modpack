@@ -26,7 +26,7 @@ interact.grief_ban = true
 
 --The second screen--
 --Lines one and two. Make sure each line is less than 70 characters, or they will run off the screen.
-interact.s2_l1 = S("So, do you want interact, or do you just want to look around")
+interact.s2_l1 = S("So, do you want privs, or do you just want to look around")
 interact.s2_l2 = S("the server?")
 --The buttons. These ones can have a maximum of 26 characters.
 interact.s2_b1 = S("Yes, I want!")
@@ -44,7 +44,7 @@ interact.s3_b1 = S("I agree")
 interact.s3_b2 = S("I disagree")
 
 --The message to send players who disagree when they are kicked for disagring with the rules.
-interact.disagree_msg = S("Bye then! You have to agree to the rules to play on the server.")
+interact.disagree_msg = S("Bye then! You have to agree to the rules to play on the server and give the right answer.")
 
 --Kick, ban or ignore players who disagree with the rules.
 --Options are "kick" "ban" "nothing"

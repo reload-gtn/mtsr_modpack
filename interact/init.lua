@@ -8,6 +8,11 @@ local rule2 = 0
 local rule3 = 0
 local rule4 = 0
 local multi = 0
+local a,b
+
+--local a = function () return math.random(49) end
+--local b = function () return math.random(50, 99) end
+--local sum = function () return a+b end
 
 local function make_formspec(player)
 	local name = player:get_player_name()
@@ -33,8 +38,12 @@ end
 --Форма запроса на interact
 local function make_formspec3(player)
 	local size = { "size[10,8]" }
+	-- обновляем слагаемые
+	a = math.random(50)
+	b = math.random(50)
+	local text = tostring(a).."+"..tostring(b).."=?"
 	table.insert(size, "textarea[0.5,0.5;9.5,5.5;TOS;" ..interact.s3_header.. ";" ..interact.rules.. "]")
-	table.insert(size, "field[0.5,6.4;2,0.5;answer;2+3="..S("answer")..";]")
+	table.insert(size, "field[0.5,6.4;2,0.5;answer;"..text..";]")
 	table.insert(size, "button[5.5,7.4;2,0.5;decline;" ..interact.s3_b2.. "]")
 	table.insert(size, "button_exit[7.5,7.4;2,0.5;accept;" ..interact.s3_b1.. "]")
 	return table.concat(size)
@@ -120,14 +129,21 @@ end)
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if formname ~= "interact_rules" then return end
 	local name = player:get_player_name()
+	print("Сумма")
+	print(tostring(a+b))
 	if fields.accept then
 		if interact.screen4 == false then
-			if minetest.check_player_privs(name, interact.priv) and fields.answer == "5" then
+			if minetest.check_player_privs(name, interact.priv) and fields.answer == tostring(a+b) then
 				minetest.chat_send_player(name, interact.interact_msg1)
 				minetest.chat_send_player(name, interact.interact_msg2)
 				local privs = minetest.get_player_privs(name)
 				privs.interact = true
-				minetest.set_player_privs(name, privs)
+				minetest.set_player_privs(name, {
+					interact = true,
+					home  = true,
+					spawn = true,
+					tp = true
+				})
 				minetest.log("action", "Granted " ..name.. " interact.")
 			else
 				if interact.disagree_action == "kick" then

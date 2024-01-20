@@ -1,14 +1,12 @@
+local S = minetest.get_translator("interact")
+
 --The actual rules.
 interact.rules = [[
-Rules:
+Rules(Правила):
 
-1. No griefing.
-2. No hacked clients.
-3. No swearing or insults towards other players.
-4. No family roleplay.
-5. No dating.
-6. Do not ask for more privs, or to be an admin. Also do not ask for items.
-7. PVP is not allowed.
+1. No griefing (Никакого грифинга).
+2. No hacked clients (Никаких взломанных клиентов).
+
 ]]
 
 --The questions on the rules, if the quiz is used.
