@@ -1,0 +1,7 @@
+# textdomain: player_spam
+
+You can not chat. Missing privilege: shout=Вы не можете общаться в чате. Отсутствующая привилегия: shout
+You spammer you!=Вы спамер!
+Your message was not sent due to flood detection. =Ваше сообщение не было отправлено из-за обнаружения флуда. 
+Please try again in some seconds.=Пожалуйста, повторите попытку через несколько секунд.
+Your message was shortened a bit to prevent from spam.=Ваше сообщение было немного сокращено для защиты от спама.
