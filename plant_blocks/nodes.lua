@@ -6,27 +6,10 @@ minetest.register_craftitem("plant_blocks:brush", {
 	inventory_image = "brush.png"
 })
 
-minetest.register_craft({
-	output = 'plant_blocks:brush',
-	recipe = {
-		{'basic_materials:plastic_sheet','', ''},
-		{'basic_materials:steel_strip', '', ''},
-		{'default:stick', '', ''},
-	}
-})
-
 --plant_blocks:ruler
 minetest.register_craftitem("plant_blocks:ruler", {
 	description = S("Ruler"),
 	inventory_image = "ruler.png"
-})
-
-minetest.register_craft({
-	output = 'plant_blocks:ruler',
-	recipe = {
-		{'default:stick','default:sword_steel', ''},
-	},
-	replacements = {{"default:sword_steel", "default:sword_steel"}}
 })
 
 --plant_blocks:scissors
@@ -35,29 +18,10 @@ minetest.register_craftitem("plant_blocks:scissors", {
 	inventory_image = "scissors.png"
 })
 
-minetest.register_craft({
-	output = 'plant_blocks:scissors',
-	recipe = {
-		{'basic_materials:steel_strip', '', ''},
-		{'basic_materials:plastic_sheet','', ''},
-	}
-})
-
 --plant_blocks:triangular_stencil Треугольный трафарет
 minetest.register_craftitem("plant_blocks:triangular_stencil", {
 	description = S("Triangular_stencil"),
 	inventory_image = "triangular_stencil.png"
-})
-
-minetest.register_craft({
-	output = 'plant_blocks:triangular_stencil',
-	recipe = {
-		{'basic_materials:plastic_sheet','plant_blocks:scissors','plant_blocks:ruler'}
-	},
-	replacements = {
-		{"plant_blocks:scissors", "plant_blocks:scissors"},
-		{"plant_blocks:ruler", "plant_blocks:ruler"},
-	}
 })
 
 --[[*******************************************************************]]
@@ -78,14 +42,6 @@ minetest.register_node("plant_blocks:floor", {
 	sounds = default.node_sound_stone_defaults(),
 })
 
-minetest.register_craft({
-	output = 'plant_blocks:floor',
-	recipe = {
-		{'basic_materials:cement_block','plant_blocks:brush', 'dye:grey'},
-	},
-	replacements = {{"plant_blocks:brush", "plant_blocks:brush"}}
-})
-
 --plant_blocks:yellow_black_floor
 minetest.register_node("plant_blocks:yellow_black_floor", {
     description = S("Industrial black and yellow floor"),
@@ -100,16 +56,6 @@ minetest.register_node("plant_blocks:yellow_black_floor", {
     is_ground_content = false,
 	groups = {cracky=3, stone=1},
 	sounds = default.node_sound_stone_defaults(),
-})
-
-minetest.register_craft({
-	output = 'plant_blocks:yellow_black_floor',
-	recipe = {
-		{'dye:black','dye:yellow', ''},
-		{'basic_materials:cement_block', 'plant_blocks:brush', ''},
-		{'', '', ''},
-	},
-	replacements = {{"plant_blocks:brush", "plant_blocks:brush"}}
 })
 
 --plant_blocks:yellow_black_line_floor
@@ -130,19 +76,6 @@ minetest.register_node("plant_blocks:yellow_black_line_floor", {
 	sounds = default.node_sound_stone_defaults(),
 })
 
-minetest.register_craft({
-	output = 'plant_blocks:yellow_black_line_floor',
-	recipe = {
-		{'dye:black','dye:yellow', 'plant_blocks:ruler'},
-		{'plant_blocks:floor', 'plant_blocks:brush', ''},
-		{'', '', ''},
-	},
-	replacements = {
-		{"plant_blocks:brush", "plant_blocks:brush"},
-		{"plant_blocks:ruler", "plant_blocks:ruler"}
-	}
-})
-
 --plant_blocks:yellow_black_line_corner_floor
 minetest.register_node("plant_blocks:yellow_black_line_corner_floor", {
     description = S("Industrial floor with black and yellow corner line"),
@@ -161,20 +94,6 @@ minetest.register_node("plant_blocks:yellow_black_line_corner_floor", {
 	sounds = default.node_sound_stone_defaults(),
 })
 
-minetest.register_craft({
-	output = 'plant_blocks:yellow_black_line_corner_floor',
-	recipe = {
-		{'dye:black','dye:yellow', 'plant_blocks:ruler'},
-		{'plant_blocks:floor', 'plant_blocks:brush', 'plant_blocks:ruler'},
-		{'', '', ''},
-	},
-	replacements = {
-		{"plant_blocks:brush", "plant_blocks:brush"},
-		{"plant_blocks:ruler", "plant_blocks:ruler"},
-		{"plant_blocks:ruler", "plant_blocks:ruler"}
-	}
-})
-
 --plant_blocks:industrial_forklift_sign_floor
 minetest.register_node("plant_blocks:forklift_floor_sign", {
     description = S("Industrial forklift floor sign"),
@@ -191,19 +110,6 @@ minetest.register_node("plant_blocks:forklift_floor_sign", {
     is_ground_content = false,
 	groups = {cracky=3, stone=1},
 	sounds = default.node_sound_stone_defaults(),
-})
-
-minetest.register_craft({
-	output = 'plant_blocks:forklift_floor_sign',
-	recipe = {
-		{'dye:black','plant_blocks:triangular_stencil', 'dye:yellow'},
-		{'', 'plant_blocks:floor', ''},
-		{'plant_blocks:brush', '', ''},
-	},
-	replacements = {
-		{"plant_blocks:brush", "plant_blocks:brush"},
-		{"plant_blocks:triangular_stencil", "plant_blocks:triangular_stencil"},
-	}
 })
 
 --plant_blocks:wall_sign_attention_forklift_operating Настенный знак внимание работает автопогрузчик
@@ -254,19 +160,6 @@ minetest.register_node("plant_blocks:wall_sign_attention_forklift_operating", {
 	groups = {crumbly=3},
 })
 
-minetest.register_craft({
-	output = 'plant_blocks:wall_sign_attention_forklift_operating',
-	recipe = {
-		{'dye:black','plant_blocks:triangular_stencil', 'dye:yellow'},
-		{'plant_blocks:brush', 'basic_materials:plastic_sheet', 'plant_blocks:scissors'},
-	},
-	replacements = {
-		{"plant_blocks:brush", "plant_blocks:brush"},
-		{"plant_blocks:triangular_stencil", "plant_blocks:triangular_stencil"},
-		{"plant_blocks:scissors", "plant_blocks:scissors"},
-	}
-})
-
 --plant_blocks:yellow_line_floor
 minetest.register_node("plant_blocks:yellow_line_floor", {
     description = S("Industrial with yellow line floor"),
@@ -283,19 +176,6 @@ minetest.register_node("plant_blocks:yellow_line_floor", {
     is_ground_content = false,
 	groups = {cracky=3, stone=1},
 	sounds = default.node_sound_stone_defaults(),
-})
-
-minetest.register_craft({
-	output = 'plant_blocks:yellow_line_floor',
-	recipe = {
-		{'','dye:yellow', 'plant_blocks:ruler'},
-		{'plant_blocks:floor', 'plant_blocks:brush', ''},
-		{'', '', ''},
-	},
-	replacements = {
-		{"plant_blocks:brush", "plant_blocks:brush"},
-		{"plant_blocks:ruler", "plant_blocks:ruler"}
-	}
 })
 
 --plant_blocks:yellow_line_corner_floor
@@ -316,18 +196,54 @@ minetest.register_node("plant_blocks:yellow_line_corner_floor", {
 	sounds = default.node_sound_stone_defaults(),
 })
 
-minetest.register_craft({
-	output = 'plant_blocks:yellow_line_corner_floor',
-	recipe = {
-		{'','dye:yellow', 'plant_blocks:ruler'},
-		{'plant_blocks:floor', 'plant_blocks:brush', 'plant_blocks:ruler'},
-		{'', '', ''},
+--plant_blocks:e05
+minetest.register_node("plant_blocks:e05", {
+	description = S("Direction to the emergency exit to the right up"),
+	inventory_image = "plant_blocks_e05.png",
+	tiles = {
+		"bg_green_sign.png",
+		"bg_green_sign.png",
+		"bg_green_sign.png",
+		"bg_green_sign.png",
+		"bg_green_sign.png",
+		"[combine:64x60:0,0=plant_blocks_e05.png"
 	},
-	replacements = {
-		{"plant_blocks:brush", "plant_blocks:brush"},
-		{"plant_blocks:ruler", "plant_blocks:ruler"},
-		{"plant_blocks:ruler", "plant_blocks:ruler"}
-	}
+	drawtype = "nodebox",
+	legacy_facedir_simple = false,
+	paramtype2 = "facedir",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.5, -0, 0.46, 0.5, 0.5, 0.5},
+		},
+	},
+	is_ground_content = false,
+	groups = {crumbly=3},
+})
+
+--plant_blocks:e06
+minetest.register_node("plant_blocks:e06", {
+	description = S("Direction to the emergency exit left up"),
+	inventory_image = "plant_blocks_e05.png^[transform4",
+	tiles = {
+		"bg_green_sign.png",
+		"bg_green_sign.png",
+		"bg_green_sign.png",
+		"bg_green_sign.png",
+		"bg_green_sign.png",
+		"[combine:64x60:0,0=plant_blocks_e05.png^[transform4"
+	},
+	drawtype = "nodebox",
+	legacy_facedir_simple = false,
+	paramtype2 = "facedir",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.5, -0, 0.46, 0.5, 0.5, 0.5},
+		},
+	},
+	is_ground_content = false,
+	groups = {crumbly=3},
 })
 
 --plant_blocks:e07
@@ -377,30 +293,17 @@ minetest.register_node("plant_blocks:e07", {
 	--on_place = minetest.rotate_node,
 })
 
-minetest.register_craft({
-	output = 'plant_blocks:e07',
-	recipe = {
-		{'dye:green','plant_blocks:ruler', ''},
-		{'default:sign_wall_wood', 'plant_blocks:brush', ''},
-		{'', '', ''},
-	},
-	replacements = {
-		{"plant_blocks:brush", "plant_blocks:brush"},
-		{"plant_blocks:ruler", "plant_blocks:ruler"},
-	}
-})
-
---plant_blocks:e05
-minetest.register_node("plant_blocks:e05", {
-	description = S("Direction to the emergency exit to the right up"),
-	inventory_image = "plant_blocks_e05.png",
+--plant_blocks:e06
+minetest.register_node("plant_blocks:e08", {
+	description = S("Direction to the emergency exit left down"),
+	inventory_image = "plant_blocks_e07.png^[transform4",
 	tiles = {
 		"bg_green_sign.png",
 		"bg_green_sign.png",
 		"bg_green_sign.png",
 		"bg_green_sign.png",
 		"bg_green_sign.png",
-		"[combine:64x60:0,0=plant_blocks_e05.png" --^[transform4
+		"[combine:64x60:0,0=plant_blocks_e07.png^[transform4"
 	},
 	drawtype = "nodebox",
 	legacy_facedir_simple = false,
@@ -413,17 +316,4 @@ minetest.register_node("plant_blocks:e05", {
 	},
 	is_ground_content = false,
 	groups = {crumbly=3},
-})
-
-minetest.register_craft({
-	output = 'plant_blocks:e05',
-	recipe = {
-		{'dye:green','plant_blocks:ruler', 'plant_blocks:brush'},
-		{'default:sign_wall_wood', '', ''},
-		{'', '', ''},
-	},
-	replacements = {
-		{"plant_blocks:brush", "plant_blocks:brush"},
-		{"plant_blocks:ruler", "plant_blocks:ruler"},
-	}
 })
