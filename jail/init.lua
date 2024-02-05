@@ -1,36 +1,12 @@
 local S = minetest.get_translator("jail")
-local escape_boundary = 50 --радиус обхвата тюрмы 
-local display_node = { x = 675, y = 3.55, z = 5 }
+jail = {}
+jail.escape_boundary = 50 --радиус обхвата тюрмы
+jail.display_node = { x = 675, y = 3.55, z = 5 }
+local jailpos = { x = 690, y = 5, z = -7 }
+local releasepos = { x = 684, y = 5, z = -7 }
+local timer = 0
 
-local x = escape_boundary
-minetest.register_node("jail:borders", {
-	tiles = {"jail_display.png"},
-	use_texture_alpha = "clip",
-	walkable = false,
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
-			-- sides
-			{-(x+.55), -(x+.55), -(x+.55), -(x+.45), (x+.55), (x+.55)},
-			{-(x+.55), -(x+.55), (x+.45), (x+.55), (x+.55), (x+.55)},
-			{(x+.45), -(x+.55), -(x+.55), (x+.55), (x+.55), (x+.55)},
-			{-(x+.55), -(x+.55), -(x+.55), (x+.55), (x+.55), -(x+.45)},
-			-- top
-			{-(x+.55), (x+.45), -(x+.55), (x+.55), (x+.55), (x+.55)},
-			-- bottom
-			{-(x+.55), -(x+.55), -(x+.55), (x+.55), -(x+.45), (x+.55)},
-			-- middle (surround protector)
-			{-.55,-.55,-.55, .55,.55,.55}
-		}
-	},
-	selection_box = {
-		type = "regular",
-	},
-	paramtype = "light",
-	groups = {dig_immediate = 3, not_in_creative_inventory = 1},
-	drop = ""
-})
+dofile(minetest.get_modpath("jail") .. "/nodes.lua")
 
 minetest.register_privilege("jail", { description = S("Allows one to send/release prisoners") })
 
@@ -41,9 +17,6 @@ prisoners_list = {}
 for line in prisoners:gmatch("[^\n]+") do
 	table.insert(prisoners_list, line)
 end
-
-jailpos = { x = 690, y = 5, z = -7 }
-local releasepos = { x = 684, y = 5, z = -7 }
 
 minetest.register_chatcommand("jail", {
 	params = "<player>",
@@ -65,7 +38,7 @@ minetest.register_chatcommand("jail", {
 				"" .. param .. " " .. S("has been sent to jail by") .. " " .. name))
 			minetest.set_player_privs(param, {
 				interact = true,
-				shout = true
+				shout = true,
 			})
 		end
 	end,
@@ -162,33 +135,35 @@ minetest.register_on_shutdown(function()
 	mod_storage:set_string("prisoners", prisoners)
 end)
 
-local timer = 0
-
 minetest.register_globalstep(function(dtime)
 	-- every 5 seconds
 	if timer > os.time() then
 		return
 	end
-	
-	timer = os.time() + 10
-	
+	timer = os.time() + 5
+
 	for i = 1, #prisoners_list do
 		local object = minetest.env:get_player_by_name(prisoners_list[i])
-		if not object then
-			return 
-		end
-		
-		local pos = object:get_pos()
-		local max_pos_x = display_node.x + escape_boundary
-		local min_pos_x = display_node.x - escape_boundary
-		local max_pos_y = display_node.y + escape_boundary
-		local min_pos_y = display_node.y - escape_boundary
-		local max_pos_z = display_node.z + escape_boundary
-		local min_pos_z = display_node.z - escape_boundary
-		
-		if (max_pos_x < pos.x or pos.x < min_pos_x) or max_pos_y < pos.y or pos.y < min_pos_y or max_pos_z < pos.z or pos.z < min_pos_z then
-			object:set_pos(jailpos)
-			minetest.chat_send_all(minetest.colorize("red", S("Escape attempt: ") .. prisoners_list[i]))
+
+		if object then
+			local pos = object:get_pos()
+
+			local max_pos_x = jail.display_node.x + jail.escape_boundary
+			local min_pos_x = jail.display_node.x - jail.escape_boundary
+			local max_pos_y = jail.display_node.y + jail.escape_boundary
+			local min_pos_y = jail.display_node.y - jail.escape_boundary
+			local max_pos_z = jail.display_node.z + jail.escape_boundary
+			local min_pos_z = jail.display_node.z - jail.escape_boundary
+
+			if (max_pos_x < pos.x or pos.x < min_pos_x) or max_pos_y < pos.y or pos.y < min_pos_y or max_pos_z < pos.z or pos.z < min_pos_z then
+				object:set_pos(jailpos)
+
+				minetest.set_player_privs(prisoners_list[i], {
+					interact = true,
+					shout = true,
+				})
+				minetest.chat_send_all(minetest.colorize("red", S("Escape attempt: ") .. prisoners_list[i]))
+			end
 		end
 	end
 end)
