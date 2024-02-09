@@ -199,7 +199,7 @@ minetest.register_node("plant_blocks:yellow_line_corner_floor", {
 --plant_blocks:e05
 minetest.register_node("plant_blocks:e05", {
 	description = S("Direction to the emergency exit to the right up"),
-	inventory_image = "plant_blocks_e05.png",
+	inventory_image = "[combine:66x52:0,10=plant_blocks_e05.png",
 	tiles = {
 		"bg_green_sign.png",
 		"bg_green_sign.png",
@@ -224,7 +224,7 @@ minetest.register_node("plant_blocks:e05", {
 --plant_blocks:e06
 minetest.register_node("plant_blocks:e06", {
 	description = S("Direction to the emergency exit left up"),
-	inventory_image = "plant_blocks_e05.png^[transform4",
+	inventory_image = "[combine:66x52:0,10=plant_blocks_e05.png^[transform4",
 	tiles = {
 		"bg_green_sign.png",
 		"bg_green_sign.png",
@@ -249,7 +249,7 @@ minetest.register_node("plant_blocks:e06", {
 --plant_blocks:e07
 minetest.register_node("plant_blocks:e07", {
 	description = S("Direction to the emergency exit down right"),
-	inventory_image = "plant_blocks_e07.png",
+	inventory_image = "[combine:66x52:0,10=plant_blocks_e07.png",
 	tiles = {
 		"bg_green_sign.png",
 		"bg_green_sign.png",
@@ -296,7 +296,7 @@ minetest.register_node("plant_blocks:e07", {
 --plant_blocks:e06
 minetest.register_node("plant_blocks:e08", {
 	description = S("Direction to the emergency exit left down"),
-	inventory_image = "plant_blocks_e07.png^[transform4",
+	inventory_image = "[combine:66x52:0,10=plant_blocks_e07.png^[transform4",
 	tiles = {
 		"bg_green_sign.png",
 		"bg_green_sign.png",
@@ -316,4 +316,63 @@ minetest.register_node("plant_blocks:e08", {
 	},
 	is_ground_content = false,
 	groups = {crumbly=3},
+})
+
+minetest.register_node("plant_blocks:hood", {
+	description = S("Industrial hood"),
+	drawtype = "mesh",
+	tiles = {
+		"plant_blocks_hood.png"
+	},
+	paramtype2 = "facedir",
+	mesh = "plant_blocks_hood.obj",
+	paramtype = "light",
+	bounding_boxes = {{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5}},
+	selection_box = {
+		type = "fixed",
+		fixed = {
+			{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
+		},
+	},
+	collision_box = {
+		type = "fixed",
+		fixed = {
+			{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
+		},
+	},
+	is_ground_content = false,
+	groups = {cracky = 1, level = 2, concrete=1},
+	sounds = default.node_sound_metal_defaults(),
+})
+
+minetest.register_node("plant_blocks:fl_arr_with_black_yellow_line", {
+	description = S("Industrial floor arrow with black and yellow line"),
+	tiles = {
+		"floor_up.png^[combine:32x32:0,0=plant_blocks_arrow_black_and_yellow_line.png",
+		"basic_materials_cement_block.png",
+		"basic_materials_cement_block.png",
+		"basic_materials_cement_block.png",
+		"basic_materials_cement_block.png",
+		"basic_materials_cement_block.png",
+	},
+	paramtype2 = "facedir",
+	is_ground_content = false,
+	groups = {cracky=3, stone=1},
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_node("plant_blocks:fl_arr_black_yellow_line_corner", {
+	description = S("Industrial floor arrow with black and yellow corner line"),
+	paramtype2 = "facedir",
+	tiles = {
+		"floor_up.png^plant_blocks_arrow_black_and_yellow_line_corner.png",
+		"basic_materials_cement_block.png",
+		"basic_materials_cement_block.png",
+		"basic_materials_cement_block.png",
+		"basic_materials_cement_block.png",
+		"basic_materials_cement_block.png",
+	},
+	is_ground_content = false,
+	groups = {cracky=3, stone=1},
+	sounds = default.node_sound_stone_defaults(),
 })

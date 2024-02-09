@@ -179,3 +179,26 @@ minetest.register_craft({
 		{"plant_blocks:ruler", "plant_blocks:ruler"},
 	}
 })
+
+minetest.register_craft({
+	output = 'plant_blocks:hood',
+	recipe = {
+		{'plant_blocks:brush','basic_materials:motor', 'default:steel_ingot'},
+		{'basic_materials:steel_strip','basic_materials:cement_block', 'dye:blue'},
+		{'basic_materials:steel_strip','basic_materials:steel_strip', 'dye:yellow'},
+	}
+})
+
+minetest.register_craft({
+	output = 'plant_blocks:fl_arr_with_black_yellow_line',
+	recipe = {
+		{'plant_blocks:yellow_black_line_floor'},
+	}
+})
+
+minetest.register_craft({
+	output = 'plant_blocks:fl_arr_black_yellow_line_corner',
+	recipe = {
+		{'plant_blocks:yellow_black_line_corner_floor'},
+	}
+})
