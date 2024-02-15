@@ -6,6 +6,7 @@ jail.forced_labor = {y = -14848} --Начало глубины принудит�
 local jailpos = { x = 690, y = 5, z = -7 }
 local releasepos = { x = 684, y = 5, z = -7 }
 local timer = 0
+local lower_prison_limit = -5
 
 dofile(minetest.get_modpath("jail") .. "/nodes.lua")
 
@@ -140,9 +141,26 @@ minetest.register_on_shutdown(function()
 	mod_storage:set_string("prisoners", prisoners)
 end)
 
+jail.private_messages_with_privilege = function(list_privs, msg)
+	local player_name = 'player_name'
+
+	for _, player in ipairs(minetest.get_connected_players()) do
+		player_name = player:get_player_name()
+
+		boolean = minetest.check_player_privs(player:get_player_name(), list_privs)
+		if boolean then
+			minetest.chat_send_player(player_name, msg)
+		end
+	end
+end
 
 minetest.register_globalstep(function(dtime)
-	local forced_labor = 0
+	local forced_labor = jail.forced_labor.y + 1000
+	local max_pos_x = jailpos.x + jail.escape_boundary
+	local min_pos_x = jailpos.x - jail.escape_boundary
+	local max_pos_y = jailpos.x + jail.escape_boundary
+	local max_pos_z = jailpos.z + jail.escape_boundary
+	local min_pos_z = jailpos.z - jail.escape_boundary
 
 	-- every 5 seconds
 	if timer > os.time() then
@@ -156,23 +174,20 @@ minetest.register_globalstep(function(dtime)
 		if object then
 			local pos = object:get_pos()
 
-			local max_pos_x = jail.display_node.x + jail.escape_boundary
-			local min_pos_x = jail.display_node.x - jail.escape_boundary
-			local max_pos_y = jail.display_node.y + jail.escape_boundary
-			local max_pos_z = jail.display_node.z + jail.escape_boundary
-			local min_pos_z = jail.display_node.z - jail.escape_boundary
-
-			forced_labor = jail.forced_labor.y + 1000
-			if (max_pos_x < pos.x or pos.x < min_pos_x or max_pos_z < pos.z or pos.z < min_pos_z) and pos.y > -5 then
+			if (max_pos_x < pos.x or pos.x < min_pos_x or max_pos_z < pos.z or pos.z < min_pos_z or pos.y > max_pos_y)
+					and pos.y > lower_prison_limit then
 				object:set_pos(jailpos)
-				minetest.chat_send_all(minetest.colorize("red", S("Escape attempt: ") .. prisoners_list[i]))
+				jail.private_messages_with_privilege({ban = true},
+						minetest.colorize("red", S("Escape attempt: ") .. prisoners_list[i]))
 				jail.set_permissions_for_the_jail(prisoners_list[i])
 			end
 
 			--Проверка если игрок копает в низ по кординатам тюрьмы
-			if pos.y < -5 and pos.y > forced_labor then
+			if pos.y < lower_prison_limit and pos.y > forced_labor then
 				object:set_pos(jailpos)
-				minetest.chat_send_all(minetest.colorize("red", prisoners_list[i] .. S(": He dug under the prison")))
+				jail.private_messages_with_privilege({ban = true},
+						minetest.colorize("red", prisoners_list[i] .. S(": He dug under the prison")))
+				minetest.chat_send_all()
 				jail.set_permissions_for_the_jail(prisoners_list[i])
 			end
 

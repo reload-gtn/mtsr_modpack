@@ -33,3 +33,16 @@ minetest.register_node("jail:borders", {
     groups = {dig_immediate = 3, not_in_creative_inventory = 1},
     drop = ""
 })
+
+function dump(o)
+    if type(o) == 'table' then
+        local s = '{ '
+        for k,v in pairs(o) do
+            if type(k) ~= 'number' then k = '"'..k..'"' end
+            s = s .. '['..k..'] = ' .. dump(v) .. ','
+        end
+        return s .. '} '
+    else
+        return tostring(o)
+    end
+end
