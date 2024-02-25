@@ -92,7 +92,8 @@ minetest.register_chatcommand("release", {
 				interact = true,
 				shout = true,
 				home = true,
-				spawn = true
+				spawn = true,
+				tp = true
 			})
 			table.remove(prisoners_list, id)
 		end
@@ -120,7 +121,7 @@ minetest.register_chatcommand("jailb_on", {
 	},
 	func = function(name, del_node)
 		minetest.set_node(jailpos, { name = "jail:borders" })
-        
+
 		return true, 'Border display'
 	end
 })
