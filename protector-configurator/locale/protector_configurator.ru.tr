@@ -1,0 +1,22 @@
+# textdomain: protector_configurator
+
+protect writer=записыватель защиты
+LMB on the terminal to insert coordinates from the protect writer into the terminal=ЛКМ по терминалу для вставки коородинат из записывателя защиты в терминал
+or=или
+LMB on the protector block to add coordinates to the protect writer’s list=ЛКМ по блоку защиты для добавления координат в список записывателя защиты
+and=и
+shift + RMB to copy coordinates from the terminal to protect writer=shift + ПКМ для копирования координат из терминала в записыватель защиты
+no coordinates have been set=не установлено ни одной координаты
+clear all=очистить все
+delete=удалить
+add=добавить
+you can't add this protector!=вы не можете добавить этот блок защиты!
+you do not own this terminal!=вы не являетесь владельцем этого терминала!
+added coordinates:=добавлены координаты:
+coordinates added to terminal=координаты добавлены в терминал
+no players have been set=не установлен ни один игрок
+set members=установить участников
+add members=добавить участников
+protector terminal=терминал защиты
+coordinates copied to writer=координаты скопированы в записыватель защиты
+exit=выход
