@@ -3,7 +3,7 @@ jail = {}
 jail.escape_boundary = 50 --радиус обхвата тюрмы
 jail.display_node = { x = 675, y = 3.55, z = 5 }
 jail.forced_labor = {y = -14848} --Начало глубины принудительных работ
-local jailpos = { x = 690, y = 5, z = -7 }
+jail.jailpos = { x = 690, y = 5, z = -7 }
 local releasepos = { x = 684, y = 5, z = -7 }
 local timer = 0
 local lower_prison_limit = -5
@@ -27,26 +27,55 @@ jail.set_permissions_for_the_jail = function (player)
 	})
 end
 
+jail.add_jail = function(self_player_name, player_name)
+	for i = 1, #prisoners_list do
+		if prisoners_list[i] == player_name then
+			minetest.chat_send_player(self_player_name, S("The player is already in jail"))
+			return
+		end
+	end
+	local player = minetest.env:get_player_by_name(player_name)
+	if (player) then
+		table.insert(prisoners_list, player_name)
+		player:setpos(jail.jailpos)
+		minetest.chat_send_player(player_name, minetest.colorize("red", S("You have been sent to jail")))
+		minetest.chat_send_all(minetest.colorize("red",
+				"" .. player_name .. " " .. S("has been sent to jail by") .. " " .. self_player_name))
+		jail.set_permissions_for_the_jail(player_name)
+	else
+		minetest.chat_send_player(player_name, minetest.colorize("red", S("Не в сети")))
+	end
+end
+
+jail.release = function(self_name, id_player)
+	local id = tonumber(id_player)
+	local playername = prisoners_list[id]
+	if (id == nil or id > #prisoners_list or id <= 0) then
+		minetest.chat_send_player(self_name, S("Invalid ID"))
+		return
+	end
+	local player = minetest.env:get_player_by_name(playername)
+	if (player) then
+		player:setpos(releasepos)
+		minetest.chat_send_player(playername, minetest.colorize("green", S("You have been released from jail")))
+		minetest.chat_send_all(minetest.colorize("green",
+				"" .. playername .. " " .. S("has been released from jail by") .. " " .. self_name))
+		minetest.set_player_privs(playername, {
+			interact = true,
+			shout = true,
+			home = true,
+			spawn = true
+		})
+		table.remove(prisoners_list, id)
+	end
+end
+
 minetest.register_chatcommand("jail", {
 	params = "<player>",
 	description = S("Sends a player to Jail"),
 	privs = { jail = true },
 	func = function(name, param)
-		for i = 1, #prisoners_list do
-			if prisoners_list[i] == param then
-				minetest.chat_send_player(name, S("The player is already in jail"))
-				return
-			end
-		end
-		local player = minetest.env:get_player_by_name(param)
-		if (player) then
-			table.insert(prisoners_list, param)
-			player:setpos(jailpos)
-			minetest.chat_send_player(param, minetest.colorize("red", S("You have been sent to jail")))
-			minetest.chat_send_all(minetest.colorize("red",
-				"" .. param .. " " .. S("has been sent to jail by") .. " " .. name))
-			jail.set_permissions_for_the_jail(param)
-		end
+		jail.add_jail(name, param)
 	end,
 })
 
@@ -76,26 +105,7 @@ minetest.register_chatcommand("release", {
 	description = S("Releases a player from Jail by ID"),
 	privs = { jail = true },
 	func = function(name, param)
-		local id = tonumber(param)
-		local playername = prisoners_list[id]
-		if (id == nil or id > #prisoners_list or id <= 0) then
-			minetest.chat_send_player(name, S("Invalid ID"))
-			return
-		end
-		local player = minetest.env:get_player_by_name(playername)
-		if (player) then
-			player:setpos(releasepos)
-			minetest.chat_send_player(playername, minetest.colorize("green", S("You have been released from jail")))
-			minetest.chat_send_all(minetest.colorize("green",
-				"" .. playername .. " " .. S("has been released from jail by") .. " " .. name))
-			minetest.set_player_privs(playername, {
-				interact = true,
-				shout = true,
-				home = true,
-				spawn = true
-			})
-			table.remove(prisoners_list, id)
-		end
+		jail.release(name, param)
 	end,
 })
 
@@ -119,7 +129,7 @@ minetest.register_chatcommand("jailb_on", {
 		jail = true,
 	},
 	func = function(name, del_node)
-		minetest.set_node(jailpos, { name = "jail:borders" })
+		minetest.set_node(jail.jailpos, { name = "jail:borders" })
         
 		return true, 'Border display'
 	end
@@ -131,7 +141,7 @@ minetest.register_chatcommand("jailb_off", {
 		interact = true,
 	},
 	func = function(name, del_node)
-        minetest.remove_node(jailpos) --удаление
+        minetest.remove_node(jail.jailpos) --удаление
 		return true, S('The border is hidden')
 	end
 })
@@ -156,11 +166,11 @@ end
 
 minetest.register_globalstep(function(dtime)
 	local forced_labor = jail.forced_labor.y + 1000
-	local max_pos_x = jailpos.x + jail.escape_boundary
-	local min_pos_x = jailpos.x - jail.escape_boundary
-	local max_pos_y = jailpos.x + jail.escape_boundary
-	local max_pos_z = jailpos.z + jail.escape_boundary
-	local min_pos_z = jailpos.z - jail.escape_boundary
+	local max_pos_x = jail.jailpos.x + jail.escape_boundary
+	local min_pos_x = jail.jailpos.x - jail.escape_boundary
+	local max_pos_y = jail.jailpos.x + jail.escape_boundary
+	local max_pos_z = jail.jailpos.z + jail.escape_boundary
+	local min_pos_z = jail.jailpos.z - jail.escape_boundary
 	local msg = ''
 
 	-- every 5 seconds
@@ -177,7 +187,7 @@ minetest.register_globalstep(function(dtime)
 
 			if (max_pos_x < pos.x or pos.x < min_pos_x or max_pos_z < pos.z or pos.z < min_pos_z or pos.y > max_pos_y)
 					and pos.y > lower_prison_limit then
-				object:set_pos(jailpos)
+				object:set_pos(jail.jailpos)
 				msg = minetest.colorize("red", S("Escape attempt: ") .. prisoners_list[i])
 				jail.private_messages_with_privilege({ban = true}, msg)
 				minetest.chat_send_player(prisoners_list[i], msg)
@@ -186,7 +196,7 @@ minetest.register_globalstep(function(dtime)
 
 			--Проверка если игрок копает в низ по кординатам тюрьмы
 			if pos.y < lower_prison_limit and pos.y > forced_labor then
-				object:set_pos(jailpos)
+				object:set_pos(jail.jailpos)
 				msg = minetest.colorize("red", prisoners_list[i] .. S(": He dug under the prison"))
 				jail.private_messages_with_privilege({ban = true}, msg)
 				minetest.chat_send_player(prisoners_list[i], msg)
@@ -195,10 +205,109 @@ minetest.register_globalstep(function(dtime)
 
 			--Условие если игрок находится взаданом параметре jail.forced_labor.y под землей
 			if pos.y > jail.forced_labor.y and pos.y < -10 then
-				object:set_pos(jailpos)
+				object:set_pos(jail.jailpos)
 				minetest.chat_send_player(prisoners_list[i], minetest.colorize("red", S("You are prohibited from leaving this area")))
 				jail.set_permissions_for_the_jail(prisoners_list[i])
 			end
 		end
+	end
+end)
+
+local function split(input, sep)
+	-- Если разделитель не указан, то ставим разделителем пробел
+	if sep == nil then
+		sep = "%s"
+	end
+
+	local t = {}
+	-- С помощью regex выделяем нужные куски
+	for str in string.gmatch(input, "([^" .. sep .. "]+)") do
+		-- и вставляем из в таблицу
+		table.insert(t, str)
+	end
+	return t
+end
+
+local select_player_jail_id = ''
+local select_player_name_to_jail = ''
+local online_players_list = {}
+
+local function get_formspec_main(name)
+	local form_list_persones = ""
+	local online_player = ''
+
+	for k, player in ipairs(minetest.get_connected_players()) do
+		online_player = online_player .. player:get_player_name() .. ","
+		table.insert(online_players_list, k, player:get_player_name())
+	end
+
+	for i = 1, #prisoners_list do
+		form_list_persones  = form_list_persones .. i .. " " ..prisoners_list[i] ..","
+	end
+
+	local formspec = {
+		"size[13,11]",
+		"label[0.3,0.3;Игроки онлайн]",
+		"textlist[0.3,0.7;4.9,9.8;online;" .. online_player .. ";1;false]",
+		"label[7.9,0.3;Заключеные]",
+		"textlist[7.9,0.7;4.8,9.8;jail_players;" .. form_list_persones .. ";1;false]",
+		"button[5.4,0.7;2.3,0.8;add;В тюрьму]",
+		"button[5.4,1.8;2.3,0.8;release;На свободу]"
+	}
+	-- table.concat is faster than string concatenation - `..`
+	return table.concat(formspec, "")
+end
+
+minetest.register_chatcommand("jailgui", {
+	func = function(name)
+		minetest.show_formspec(name, "jail:formspec_main", get_formspec_main(name))
+	end
+})
+
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	local event = ''
+	local pars = {}
+	local pname = player:get_player_name()
+	local player_name = ''
+
+	if formname ~= "jail:formspec_main" then
+		return
+	end
+
+	if fields.add then
+		minetest.chat_send_all("Выбран id заключеного: " .. dump(select_player_name_to_jail))
+		jail.add_jail(pname, select_player_name_to_jail)
+		minetest.show_formspec(pname, "jail:formspec_main", get_formspec_main(pname))
+
+		select_player_name_to_jail = ''
+	end
+
+	--TODO: выбор игрока для помещения в тюрьму
+	if fields.online then
+		event = minetest.explode_textlist_event(fields.online)
+		if event.type == 'CHG' then
+			select_player_name_to_jail = online_players_list[event.index]
+
+			minetest.chat_send_player(pname, "Выбран Игрок:" .. " " .. dump(select_player_name_to_jail))
+		end
+	end
+
+	--TODO: выбор игрока для освобождения
+	if fields.jail_players then
+		event = minetest.explode_textlist_event(fields.jail_players)
+
+		if event.type == 'CHG' then
+			select_player_jail_id = event.index
+			if type(array) ~= 'nil' then
+				minetest.chat_send_all("Выбран заключеный" .." id:".. dump(select_player_jail_id) ..
+						" name:" .. prisoners_list[select_player_jail_id])
+			end
+		end
+	end
+
+	if fields.release then
+		jail.release(pname, select_player_jail_id)
+		minetest.show_formspec(pname, "jail:formspec_main", get_formspec_main(pname))
+		select_player_jail_id = ''
 	end
 end)
