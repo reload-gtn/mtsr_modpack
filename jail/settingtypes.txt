@@ -1,0 +1,16 @@
+[Prison spawn point]
+jail_prison_spawn_point_x (Position X) int 690
+jail_prison_spawn_point_y (Position Y) int 5
+jail_prison_spawn_point_z (Position z) int -7
+
+[End of the border]
+jail_wrap_radius (Wrap radius) int 50
+jail_lower_prison_limit (Lower prison limit) int -5
+
+[Boundary of forced labor]
+jail_upper_limit_underground_y (Lower prison limit) int -14848
+
+[Release]
+jail_releasepos_x (Position X) int 684
+jail_releasepos_y (Position Y) int 5
+jail_releasepos_z (Position Z) int -7
