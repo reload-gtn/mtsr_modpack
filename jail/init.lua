@@ -64,7 +64,8 @@ jail.release = function(self_name, id_player)
 			interact = true,
 			shout = true,
 			home = true,
-			spawn = true
+			spawn = true,
+			tp = true
 		})
 		table.remove(prisoners_list, id)
 	end
@@ -130,7 +131,6 @@ minetest.register_chatcommand("jailb_on", {
 	},
 	func = function(name, del_node)
 		minetest.set_node(jail.jailpos, { name = "jail:borders" })
-        
 		return true, 'Border display'
 	end
 })
