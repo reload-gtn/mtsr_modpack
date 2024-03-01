@@ -55,6 +55,20 @@ jail.add_jail = function(self_player_name, player_name)
 	end
 end
 
+jail.set_release_privs = function(self_name, player, prisoners_list_id)
+	minetest.set_player_privs(player, {
+		interact = true,
+		shout = true,
+		home = true,
+		spawn = true,
+		tp = true
+	})
+	minetest.chat_send_all(minetest.colorize("green",
+			"" .. player .. " " .. S("has been released from jail by") .. " " .. self_name))
+
+	table.remove(prisoners_list, prisoners_list_id)
+end
+
 jail.release = function(self_name, id_player)
 	local id = tonumber(id_player)
 	local playername = prisoners_list[id]
@@ -62,20 +76,14 @@ jail.release = function(self_name, id_player)
 		minetest.chat_send_player(self_name, S("Invalid ID"))
 		return
 	end
+
 	local player = minetest.env:get_player_by_name(playername)
 	if (player) then
 		player:setpos(releasepos)
 		minetest.chat_send_player(playername, minetest.colorize("green", S("You have been released from jail")))
-		minetest.chat_send_all(minetest.colorize("green",
-				"" .. playername .. " " .. S("has been released from jail by") .. " " .. self_name))
-		minetest.set_player_privs(playername, {
-			interact = true,
-			shout = true,
-			home = true,
-			spawn = true,
-			tp = true
-		})
-		table.remove(prisoners_list, id)
+		jail.set_release_privs(self_name, playername, id)
+	else
+		jail.set_release_privs(self_name, playername, id)
 	end
 end
 
