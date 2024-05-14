@@ -63,3 +63,4 @@ minetest.register_craft({
 })
 
 techage.add_grinder_recipe({input="multidecor:consolidated_oil", output="techage:plastic_granules"})
+techage.add_grinder_recipe({input="ethereal:wild_onion_plant 10", output="dye:white"})
