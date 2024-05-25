@@ -43,3 +43,5 @@ minetest.register_craft({
         { 'tech_additions:zinc_ingot_block', },
     }
 })
+
+techage.add_grinder_recipe({input="multidecor:granite_block", output="default:gravel"})
